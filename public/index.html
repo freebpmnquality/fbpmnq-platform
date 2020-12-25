@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+
+    <title>Login</title>
+</head>
+
+<body>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="javascript:void(0);">Login</a>
+    </nav>
+
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <form onsubmit="return checkUser();">
+                    <div class="form-group">
+                        <label for="login">Login</label>
+                        <input type="text" class="form-control" id="login">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+    </div>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/popper.min.js"></script>
+
+    <script>
+        function authorization(userLogin, userPassword) {
+            $.ajax({
+                url: "api/user/authorization",
+                contentType: "application/json",
+                method: "POST",
+                data: JSON.stringify({
+                    login: userLogin,
+                    password: userPassword
+                }),
+                success: function(user) {
+                    if (user.status === "success") {
+                        window.location.href = "/" + user.result.role + ".html?uid=" + user.result.uid;
+                    } else {
+                        alert("User login or password is incorrect!");
+                    }
+                }
+            })
+        }
+
+        function checkUser() {
+            var login = $("#login").val();
+            var password = $("#password").val();
+
+            authorization(login, password);
+
+            return false;
+        }
+    </script>
+</body>
+
+</html>

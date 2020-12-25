@@ -1,0 +1,19 @@
+[{
+        "login": "user",
+        "password": "user",
+        "role": "reviewer",
+        "uid": "ee11cbb19052e40b07aac0ca060c23ee"
+    },
+    {
+        "login": "admin",
+        "password": "admin",
+        "role": "designer",
+        "uid": "21232f297a57a5a743894a0e4a801fc3"
+    },
+    {
+        "login": "admin2",
+        "password": "admin2",
+        "role": "designer",
+        "uid": "c84258e9c39059a89ab77d846ddab909"
+    }
+]
