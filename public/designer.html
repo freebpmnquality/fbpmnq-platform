@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/main.css" />
 
-    <title>Designer</title>
+    <title>Workspace</title>
 </head>
 
 <body>
@@ -21,6 +21,12 @@
                     <a class="nav-link" href="javascript:void(0);" id="userLogin"></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="openVerifiedPage('designer.html');">Workspace</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="openVerifiedPage('invite.html');">Users</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="./">Logout</a>
                 </li>
             </ul>
@@ -31,10 +37,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-4">
+                <h5>Models</h5>
                 <div class="list-group" id="modelsList" role="tablist">
                 </div>
             </div>
             <div class="col-sm-8">
+                <h5>Workspace</h5>
                 <div id="workzone">
                     <div class="card" id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" onclick="selectFile();" onmouseover="dropMouseOver(event);" onmouseleave="dropMouseLeave(event);" ondragleave="dragOverLeave(event);">
                         <div class="card-body">
@@ -78,6 +86,7 @@
     <script src="js/popper.min.js"></script>
     <script src="js/bpmn-viewer.development.js"></script>
     <script src="js/ace/ace.js"></script>
+    <script src="js/verification.js"></script>
     <script src="js/main.js"></script>
 </body>
 
