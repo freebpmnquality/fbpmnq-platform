@@ -501,7 +501,29 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry) {
                 'No mistakes detected</div>');
         }
 
-
+        $.ajax({
+            url: "/api/quality/assessment",
+            contentType: "application/json",
+            method: "POST",
+            data: JSON.stringify({
+                process: processName,
+                measures: warnings
+            }),
+            async: false,
+            success: function(response) {
+                if (response.discrete < 1) {
+                    $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                        "Correct: " + (response.discrete === 1 ? "Yes" : "No") + '</div>');
+                    $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                        "Quality: " + response.continuous + '</div>');
+                } else {
+                    $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                        "Correct: " + (response.discrete === 1 ? "Yes" : "No") + '</div>');
+                    $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                        "Quality: " + response.continuous + '</div>');
+                }
+            }
+        });
     }
 }
 
@@ -536,7 +558,7 @@ function readFile(file) {
             success: function(models) {
                 loadModels();
             }
-        })
+        });
     };
 }
 

@@ -8,6 +8,7 @@ var authorization = require('./user/authorization');
 var uploading = require('./model/uploading');
 var querying = require('./model/querying');
 var registration = require('./user/registration');
+var assessment = require('./quality/assessment');
 
 app.use(express.static(__dirname + "/public"));
 
@@ -65,6 +66,13 @@ app.get("/api/model/querying/all/:uid", function(req, res) {
     var uid = req.params.uid;
 
     res.send(querying.getAllModelsByUserId(uid));
+});
+
+app.post("/api/quality/assessment", jsonParser, function(req, res) {
+    var process = req.body.process;
+    var measures = req.body.measures;
+
+    res.send(assessment.assessQuality(process, measures));
 });
 
 app.listen(3000, function() {
