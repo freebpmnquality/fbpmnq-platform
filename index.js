@@ -2,15 +2,16 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require('path');
 
-var app = express();
-var jsonParser = bodyParser.json();
+const app = express();
+const jsonParser = bodyParser.json();
 
-var authorization = require('./user/authorization');
-var uploading = require('./model/uploading');
-var querying = require('./model/querying');
-var registration = require('./user/registration');
-var assessment = require('./quality/assessment');
-var reporting = require("./quality/reporting");
+const authorization = require('./user/authorization');
+const uploading = require('./model/uploading');
+const querying = require('./model/querying');
+const registration = require('./user/registration');
+const assessment = require('./quality/assessment');
+const measurement = require("./quality/measurement");
+const reporting = require("./quality/reporting");
 
 app.post("/api/user/authorization", jsonParser, function(req, res) {
     var login = req.body.login;
@@ -74,7 +75,14 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var uid = req.body.uid;
     var raw = req.body.raw;
 
-    res.send(assessment.assessQuality(process, measures, uid, raw));
+    var discrete = measurement.calculateDiscreteCriteria(measures);
+    var continuous = measurement.calculateContinuousCriteria(measures);
+
+    var report = assessment.assessQuality(process, measures, uid, raw, discrete, continuous);
+
+    reporting.saveReport(report);
+
+    res.send(report);
 });
 
 app.get("/api/reporting/:uid", function(req, res) {
