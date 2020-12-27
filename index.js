@@ -1,5 +1,6 @@
-var express = require("express");
-var bodyParser = require("body-parser");
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require('path');
 
 var app = express();
 var jsonParser = bodyParser.json();
@@ -10,8 +11,6 @@ var querying = require('./model/querying');
 var registration = require('./user/registration');
 var assessment = require('./quality/assessment');
 var reporting = require("./quality/reporting");
-
-app.use(express.static(__dirname + "/public"));
 
 app.post("/api/user/authorization", jsonParser, function(req, res) {
     var login = req.body.login;
@@ -90,6 +89,8 @@ app.get("/api/reporting/get/:id", function(req, res) {
     res.send(reporting.getReportById(id));
 });
 
-app.listen(3000, function() {
-    console.log("Gateway is started...");
-});
+const PORT = process.env.PORT || 5000;
+
+app
+    .use(express.static(path.join(__dirname, 'public')))
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
