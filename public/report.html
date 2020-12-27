@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
 
     <title>Reports</title>
 </head>
@@ -105,8 +106,36 @@
                                 ` + (report.measures.discrete.R4 === 1 ? "Yes" : "No") + `</p>
                             <p class="card-text">Avoid inclusive (OR) gateways: 
                                 ` + (report.measures.discrete.R5 === 1 ? "Yes" : "No") + `</p>
+                            <p>
+                                <div id="canvas"></div>
+                            </p>
                         </div>
                     </div>`);
+
+                    var viewer = new BpmnJS({
+                        container: '#canvas'
+                    });
+
+                    viewer.importXML(report.raw, function(err) {
+                        if (err) {
+                            $('#canvas').append('<div class="alert alert-danger" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' + err + '</div>');
+                        } else {
+                            let canvas = viewer.get('canvas');
+
+                            canvas.zoom('fit-viewport');
+
+                            let xmlDoc = null;
+
+                            if (window.DOMParser) {
+                                let parser = new DOMParser();
+                                xmlDoc = parser.parseFromString(report.raw, 'text/xml');
+                            } else {
+                                xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+                                xmlDoc.async = false;
+                                xmlDoc.loadXML(report.raw);
+                            }
+                        }
+                    });
                 }
             });
         }

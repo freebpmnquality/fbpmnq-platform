@@ -69,7 +69,7 @@ function analyzeDoc_Click() {
             var overlays = viewer.get('overlays');
             let elementRegistry = viewer.get('elementRegistry');
 
-            bpmnValidation(xmlDoc, prefix, overlays, elementRegistry);
+            bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML);
         }
     });
 }
@@ -136,7 +136,7 @@ function colorNode(elementId, overlays, elementRegistry, tip) {
     coloredNodes.push(elementId);
 }
 
-function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry) {
+function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
     coloredNodes = [];
     let processList = xmlDoc.getElementsByTagName(prefix + 'process');
 
@@ -508,7 +508,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry) {
             data: JSON.stringify({
                 process: processName,
                 measures: warnings,
-                uid: uid
+                uid: uid,
+                raw: bpmnXML
             }),
             async: false,
             success: function(response) {

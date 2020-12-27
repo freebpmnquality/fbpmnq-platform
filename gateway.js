@@ -73,8 +73,9 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var process = req.body.process;
     var measures = req.body.measures;
     var uid = req.body.uid;
+    var raw = req.body.raw;
 
-    res.send(assessment.assessQuality(process, measures, uid));
+    res.send(assessment.assessQuality(process, measures, uid, raw));
 });
 
 app.get("/api/reporting/:uid", function(req, res) {
