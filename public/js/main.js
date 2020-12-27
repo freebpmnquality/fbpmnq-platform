@@ -511,16 +511,16 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry) {
             }),
             async: false,
             success: function(response) {
-                if (response.discrete < 1) {
+                if (response.quality.discrete < 1) {
                     $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Correct: " + (response.discrete === 1 ? "Yes" : "No") + '</div>');
+                        "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
                     $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Quality: " + response.continuous + '</div>');
+                        "Quality: " + response.quality.continuous + '</div>');
                 } else {
                     $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Correct: " + (response.discrete === 1 ? "Yes" : "No") + '</div>');
+                        "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
                     $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Quality: " + response.continuous + '</div>');
+                        "Quality: " + response.quality.continuous + '</div>');
                 }
             }
         });
@@ -581,7 +581,8 @@ function loadModels() {
                             role="tab" 
                             aria-controls="profile" 
                             style="word-wrap: break-word;">
-                                <small>` + models[i].file + `</small>
+                                <small>` + models[i].file + `</small><br>
+                                <small class="text-muted">` + models[i].timestamp + `</small>
                             </a>`);
             }
         }

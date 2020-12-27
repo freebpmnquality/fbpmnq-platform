@@ -10,7 +10,8 @@ function uploadModel(bpmnModel, fileName, userId) {
         id: modelId,
         raw: bpmnModel,
         file: fileName,
-        uid: userId
+        uid: userId,
+        timestamp: new Date().toLocaleString()
     };
 
     models.push(model);

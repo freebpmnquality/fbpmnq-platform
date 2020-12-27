@@ -44,7 +44,8 @@ function createUser(login, password, role, master) {
         password: password,
         role: role,
         uid: md5(login + password).toString(),
-        master: master
+        master: master,
+        timestamp: new Date().toLocaleString()
     };
 
     users.push(user);
