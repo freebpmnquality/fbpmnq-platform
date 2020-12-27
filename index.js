@@ -11,7 +11,9 @@ var registration = require('./user/registration');
 var assessment = require('./quality/assessment');
 var reporting = require("./quality/reporting");
 
-app.use(express.static(__dirname + "/public"));
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+});
 
 app.post("/api/user/authorization", jsonParser, function(req, res) {
     var login = req.body.login;
