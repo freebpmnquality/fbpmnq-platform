@@ -1,4 +1,4 @@
-function assessQuality(process, measures, uid, raw, discrete, continuous) {
+function assessQuality(discrete, continuous) {
     var discreteQualityWSM = 0.21 * discrete.R1 + 0.19 * discrete.R2 + 0.16 * discrete.R3 + 0.28 * discrete.R4 + 0.16 * discrete.R5;
     var discreteQualityMIN = Math.min(discrete.R1, discrete.R2, discrete.R3, discrete.R4, discrete.R5);
 
@@ -6,9 +6,7 @@ function assessQuality(process, measures, uid, raw, discrete, continuous) {
     var continuousQualityMIN = Math.min(continuous.R1, continuous.R2, continuous.R3, continuous.R4, continuous.R5);
 
     var report = {
-        process: process,
         measures: {
-            initial: measures,
             discrete: discrete,
             continuous: continuous
         },
@@ -26,9 +24,7 @@ function assessQuality(process, measures, uid, raw, discrete, continuous) {
                 minl: getLinguisticQuality(continuousQualityMIN)
             }
         },
-        timestamp: new Date().toLocaleString(),
-        uid: uid,
-        raw: raw
+        timestamp: new Date().toLocaleString()
     };
 
     return report;

@@ -77,8 +77,8 @@
                         onclick = "showDetails(` + reports[i].id + `);" 
                         style="word-wrap: break-word;">
                             <small>` + reports[i].process + `</small><br>
-                            <small>Correct: ` + (reports[i].quality.discrete === 1 ? "Yes" : "No") + `</small><br>
-                            <small>Quality: ` + reports[i].quality.continuous + `</small><br>
+                            <small>` + reports[i].file + `</small><br>
+                            <small>Correct: ` + (reports[i].quality.discrete.min === 1 ? "Yes" : "No") + `</small><br>
                             <small>` + reports[i].timestamp + `</small>
                         </a>`);
                 }

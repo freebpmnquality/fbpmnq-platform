@@ -26,6 +26,7 @@ $(document).ready(function() {
 var modelsCollection = [];
 var coloredNodes = [];
 var resultData = {};
+var fileName = null;
 
 function analyzeDoc_Click() {
     $('#zoombuttons').show();
@@ -508,7 +509,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
             process: processName,
             measures: warnings,
             uid: uid,
-            raw: bpmnXML
+            raw: bpmnXML,
+            file: fileName
         });
 
         $('#recommendations').append('<p><button type="button" onclick="saveReport(' + k + ');" class="btn btn-info btn-sm">Report</button></p>');
@@ -601,6 +603,8 @@ function displayModel(id) {
             file = modelsCollection[i].file;
         }
     }
+
+    fileName = file;
 
     editor.setValue('');
     editor.insert(data);

@@ -74,11 +74,18 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var measures = req.body.measures;
     var uid = req.body.uid;
     var raw = req.body.raw;
+    var file = req.body.file;
 
     var discrete = measurement.calculateDiscreteCriteria(measures);
     var continuous = measurement.calculateContinuousCriteria(measures);
 
-    var report = assessment.assessQuality(process, measures, uid, raw, discrete, continuous);
+    var report = assessment.assessQuality(discrete, continuous);
+
+    report["process"] = process;
+    report.measures["initial"] = measures;
+    report["uid"] = uid;
+    report["raw"] = raw;
+    report["file"] = file;
 
     reporting.saveReport(report);
 
