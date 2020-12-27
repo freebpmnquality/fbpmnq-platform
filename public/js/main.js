@@ -509,7 +509,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
             raw: bpmnXML
         });
 
-        $('#recommendations').append('<button type="button" onclick="saveReport(' + k + ');" class="btn btn-info btn-sm">Save</button>');
+        $('#recommendations').append('<p><button type="button" onclick="saveReport(' + k + ');" class="btn btn-info btn-sm">Report</button></p>');
     }
 }
 
@@ -521,18 +521,6 @@ function saveReport(process) {
         data: resultData[process],
         async: false,
         success: function(response) {
-            if (response.quality.discrete < 1) {
-                $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                    "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
-                $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                    "Quality: " + response.quality.continuous + '</div>');
-            } else {
-                $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                    "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
-                $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                    "Quality: " + response.quality.continuous + '</div>');
-            }
-
             alert("Report is saved!");
             openVerifiedPage("report.html");
         }
