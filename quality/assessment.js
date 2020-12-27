@@ -14,6 +14,7 @@ function assessQuality(process, measures, uid, raw) {
     var report = {
         process: process,
         measures: {
+            initial: measures,
             discrete: discrete,
             continuous: continuous
         },
