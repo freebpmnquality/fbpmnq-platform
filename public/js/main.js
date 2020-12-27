@@ -25,6 +25,7 @@ $(document).ready(function() {
 
 var modelsCollection = [];
 var coloredNodes = [];
+var resultData = {};
 
 function analyzeDoc_Click() {
     $('#zoombuttons').show();
@@ -501,32 +502,41 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                 'No mistakes detected</div>');
         }
 
-        $.ajax({
-            url: "/api/quality/assessment",
-            contentType: "application/json",
-            method: "POST",
-            data: JSON.stringify({
-                process: processName,
-                measures: warnings,
-                uid: uid,
-                raw: bpmnXML
-            }),
-            async: false,
-            success: function(response) {
-                if (response.quality.discrete < 1) {
-                    $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
-                    $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Quality: " + response.quality.continuous + '</div>');
-                } else {
-                    $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
-                    $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
-                        "Quality: " + response.quality.continuous + '</div>');
-                }
-            }
+        resultData[k] = JSON.stringify({
+            process: processName,
+            measures: warnings,
+            uid: uid,
+            raw: bpmnXML
         });
+
+        $('#recommendations').append('<button type="button" onclick="saveReport(' + k + ');" class="btn btn-info btn-sm">Save</button>');
     }
+}
+
+function saveReport(process) {
+    $.ajax({
+        url: "/api/quality/assessment",
+        contentType: "application/json",
+        method: "POST",
+        data: resultData[process],
+        async: false,
+        success: function(response) {
+            if (response.quality.discrete < 1) {
+                $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                    "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
+                $('#recommendations').append('<div class="alert alert-warning" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                    "Quality: " + response.quality.continuous + '</div>');
+            } else {
+                $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                    "Correct: " + (response.quality.discrete === 1 ? "Yes" : "No") + '</div>');
+                $('#recommendations').append('<div class="alert alert-success" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
+                    "Quality: " + response.quality.continuous + '</div>');
+            }
+
+            alert("Report is saved!");
+            openVerifiedPage("report.html");
+        }
+    });
 }
 
 function readFile(file) {
