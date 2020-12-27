@@ -28,16 +28,22 @@ function createUser(login, password, role, master) {
     var users = JSON.parse(content);
 
     for (var i = 0; i < users.length; i++) {
-        if (users[i].uid === md5(login).toString()) {
+        if (users[i].uid === md5(login + password).toString()) {
             return { "status": "exists" };
         }
+    }
+
+    var regex = /^([0-9a-zA-Z\_\!]+)$/;
+
+    if (!regex.test(login) || !regex.test(password)) {
+        return { "status": "invalid" };
     }
 
     var user = {
         login: login,
         password: password,
         role: role,
-        uid: md5(login).toString(),
+        uid: md5(login + password).toString(),
         master: master
     };
 

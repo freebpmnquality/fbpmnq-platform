@@ -110,6 +110,10 @@
                         openVerifiedPage("invite.html");
                     }
 
+                    if (response.status === "invalid") {
+                        alert("Invalid login or password!");
+                    }
+
                     if (response.status === "exists") {
                         alert("User already exists!");
                     }
