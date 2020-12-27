@@ -50,7 +50,7 @@
                 }),
                 success: function(user) {
                     if (user.status === "success") {
-                        window.location.href = "/" + user.result.role + ".html?uid=" + user.result.uid;
+                        window.location.href = "/main.html?uid=" + user.result.uid;
                     } else {
                         alert("User login or password is incorrect!");
                     }
