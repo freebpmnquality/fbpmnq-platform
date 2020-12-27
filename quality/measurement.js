@@ -19,9 +19,23 @@ function calculateDiscreteCriteria(measures) {
 }
 
 function calculateContinuousCriteria(measures) {
-    // TODO
+    var r1 = measures.totalNodes <= 31 ? 1 : 31 / measures.totalNodes;
 
-    return calculateDiscreteCriteria(measures);
+    var r2 = 1 - (measures.invalidTasks + measures.invalidEvents + measures.uncertainGateways) / measures.totalNodes;
+
+    var r3 = Math.min(1 / (1 + Math.pow(measures.startEvents - 1, 2)), 1 / (1 + Math.pow(measures.endEvents - 1, 2)));
+
+    var r4 = measures.gatewaysMismatch === 0 ? 1 : 1 - measures.gatewaysMismatch / measures.totalGateways;
+
+    var r5 = measures.inclusiveGateways === 0 ? 1 : 1 - measures.inclusiveGateways / measures.totalGateways;
+
+    return {
+        "R1": r1,
+        "R2": r2,
+        "R3": r3,
+        "R4": r4,
+        "R5": r5
+    };
 }
 
 module.exports.calculateDiscreteCriteria = calculateDiscreteCriteria;

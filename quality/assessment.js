@@ -9,12 +9,12 @@ function assessQuality(process, measures) {
     var continuous = measurement.calculateContinuousCriteria(measures);
 
     var discreteQuality = Math.min(discrete.R1, discrete.R2, discrete.R3, discrete.R4, discrete.R5);
-    var continuousQuality = discreteQuality; // TODO
+    var continuousQuality = 0.21 * discrete.R1 + 0.19 * discrete.R2 + 0.16 * discrete.R3 + 0.28 * discrete.R4 + 0.16 * discrete.R5;
 
     var report = {
         "process": process,
         "discrete": discreteQuality,
-        "continuous": continuousQuality
+        "continuous": continuousQuality.toFixed(2)
     };
 
     reporting.saveReport(report);
