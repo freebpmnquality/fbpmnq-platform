@@ -109,6 +109,7 @@
                             <p>
                                 <div id="canvas"></div>
                             </p>
+                            <a href="javascript:void(0);" onclick="printReport('` + report.process + `');" class="btn btn-primary">Print</a>
                         </div>
                     </div>`);
 
@@ -138,6 +139,22 @@
                     });
                 }
             });
+        }
+
+        function printReport(process) {
+            var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+
+            mywindow.document.write('<html><head><title>' + process + '</title>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(document.getElementById("details").innerHTML);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close();
+            mywindow.focus();
+
+            mywindow.print();
+
+            return false;
         }
     </script>
 </body>
