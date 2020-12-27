@@ -7,5 +7,7 @@
         "express": "^4.14.0",
         "js-md5": "^0.7.3"
     },
-    "start": "node index.js"
+    "scripts": {
+        "start": "node index.js"
+    }
 }
