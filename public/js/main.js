@@ -174,6 +174,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
             uncertainGateways: 0,
             totalNodes: 0,
             totalGateways: 0,
+            mismatchedGateways: 0,
 
             validate: function() {
                 let r1 = this.totalNodes <= 31 ? 1 : 0;
@@ -455,6 +456,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     Math.abs(splits[key]['arcs'] - joins[key]['arcs']));
 
                 warnings.gatewaysMismatch += gatewaysMismatch;
+                warnings.mismatchedGateways += Math.abs(splits[key]['nodes'] - joins[key]['nodes']);
 
                 if (gatewaysMismatch > 0) {
                     $('#recommendations').append('<div class="alert alert-danger" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +

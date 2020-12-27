@@ -96,21 +96,25 @@
                         <div class="card-body">
                             <div class="alert alert-` + (report.quality.discrete === 1 ? "success" : "warning") + `" 
                                 role="alert">Correct: ` + (report.quality.discrete === 1 ? "Yes" : "No") + `</div>
+
                             <div class="alert alert-` + (report.quality.discrete === 1 ? "success" : "warning") + `" 
                                 role="alert">Quality: ` + report.quality.continuous + `</div>
+
                             <p class="card-text">Do not use a lot of elements or de-compose a model with a lot of elements if possible: 
-                                ` + (report.measures.discrete.R1 === 1 ? "Yes" : "No") + `</p>
+                                ` + (report.measures.discrete.R1 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R1.toFixed(2) + `)</p>
                             <p class="card-text">Avoid nodes with invalid inputs or out-puts: 
-                                ` + (report.measures.discrete.R2 === 1 ? "Yes" : "No") + `</p>
+                                ` + (report.measures.discrete.R2 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R2.toFixed(2) + `)</p>
                             <p class="card-text">Avoid usage of multiple start or multiple end events or missing events: 
-                                ` + (report.measures.discrete.R3 === 1 ? "Yes" : "No") + `</p>
+                                ` + (report.measures.discrete.R3 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R3.toFixed(2) + `)</p>
                             <p class="card-text">Avoid gateways mismatch: 
-                                ` + (report.measures.discrete.R4 === 1 ? "Yes" : "No") + `</p>
+                                ` + (report.measures.discrete.R4 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R4.toFixed(2) + `)</p>
                             <p class="card-text">Avoid inclusive (OR) gateways: 
-                                ` + (report.measures.discrete.R5 === 1 ? "Yes" : "No") + `</p>
+                                ` + (report.measures.discrete.R5 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R5.toFixed(2) + `)</p>
+
                             <p>
                                 <div id="canvas"></div>
                             </p>
+
                             <a href="javascript:void(0);" onclick="printReport('` + report.process + `');" class="btn btn-info">Print</a>
                         </div>
                     </div>`);

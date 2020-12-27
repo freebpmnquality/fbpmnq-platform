@@ -5,7 +5,7 @@ function calculateDiscreteCriteria(measures) {
 
     var r3 = Math.min(measures.startEvents === 1 ? 1 : 0, measures.endEvents === 1 ? 1 : 0);
 
-    var r4 = measures.gatewaysMismatch === 0 ? 1 : 0;
+    var r4 = measures.mismatchedGateways === 0 ? 1 : 0;
 
     var r5 = measures.inclusiveGateways === 0 ? 1 : 0;
 
@@ -25,7 +25,7 @@ function calculateContinuousCriteria(measures) {
 
     var r3 = Math.min(1 / (1 + Math.pow(measures.startEvents - 1, 2)), 1 / (1 + Math.pow(measures.endEvents - 1, 2)));
 
-    var r4 = measures.gatewaysMismatch === 0 ? 1 : 1 - (measures.gatewaysMismatch / measures.totalGateways);
+    var r4 = measures.gatewaysMismatch === 0 ? 1 : 1 - (measures.mismatchedGateways / measures.totalGateways);
 
     var r5 = measures.inclusiveGateways === 0 ? 1 : 1 - (measures.inclusiveGateways / measures.totalGateways);
 
