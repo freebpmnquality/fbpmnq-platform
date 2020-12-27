@@ -9,6 +9,7 @@ var uploading = require('./model/uploading');
 var querying = require('./model/querying');
 var registration = require('./user/registration');
 var assessment = require('./quality/assessment');
+var reporting = require("./quality/reporting");
 
 app.use(express.static(__dirname + "/public"));
 
@@ -71,8 +72,21 @@ app.get("/api/model/querying/all/:uid", function(req, res) {
 app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var process = req.body.process;
     var measures = req.body.measures;
+    var uid = req.body.uid;
 
-    res.send(assessment.assessQuality(process, measures));
+    res.send(assessment.assessQuality(process, measures, uid));
+});
+
+app.get("/api/reporting/:uid", function(req, res) {
+    var uid = req.params.uid;
+
+    res.send(reporting.getAllReports(uid));
+});
+
+app.get("/api/reporting/get/:id", function(req, res) {
+    var id = req.params.id;
+
+    res.send(reporting.getReportById(id));
 });
 
 app.listen(3000, function() {

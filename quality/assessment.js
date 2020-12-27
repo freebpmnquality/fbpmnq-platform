@@ -4,7 +4,7 @@ const { report } = require("process");
 var measurement = require("./measurement");
 var reporting = require("./reporting");
 
-function assessQuality(process, measures) {
+function assessQuality(process, measures, uid) {
     var discrete = measurement.calculateDiscreteCriteria(measures);
     var continuous = measurement.calculateContinuousCriteria(measures);
 
@@ -21,7 +21,8 @@ function assessQuality(process, measures) {
             discrete: discreteQuality,
             continuous: continuousQuality.toFixed(2)
         },
-        timestamp: new Date().toLocaleString()
+        timestamp: new Date().toLocaleString(),
+        uid: uid
     };
 
     reporting.saveReport(report);

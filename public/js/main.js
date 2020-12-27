@@ -507,7 +507,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry) {
             method: "POST",
             data: JSON.stringify({
                 process: processName,
-                measures: warnings
+                measures: warnings,
+                uid: uid
             }),
             async: false,
             success: function(response) {
@@ -582,7 +583,7 @@ function loadModels() {
                             aria-controls="profile" 
                             style="word-wrap: break-word;">
                                 <small>` + models[i].file + `</small><br>
-                                <small class="text-muted">` + models[i].timestamp + `</small>
+                                <small>` + models[i].timestamp + `</small>
                             </a>`);
             }
         }

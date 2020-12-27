@@ -26,6 +26,9 @@
                     <a class="nav-link" href="javascript:void(0);" onclick="openVerifiedPage('invite.html');">Users</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="javascript:void(0);" onclick="openVerifiedPage('report.html');">Reports</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="./">Logout</a>
                 </li>
             </ul>
@@ -87,8 +90,8 @@
                         role="tab" 
                         aria-controls="profile" 
                         style="word-wrap: break-word;">
-                        <small>Login: ` + users[i].login + `<br>Role: ` + users[i].role + `</small><br>
-                        <small class="text-muted">Created: ` + users[i].timestamp + `</small>
+                            <small>Login: ` + users[i].login + `<br>Role: ` + users[i].role + `</small><br>
+                            <small>` + users[i].timestamp + `</small>
                         </a>`);
                 }
             }
