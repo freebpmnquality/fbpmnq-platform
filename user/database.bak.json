@@ -1,7 +1,8 @@
 [{
-    "login": "admin",
-    "password": "admin",
+    "login": "test",
+    "password": "test",
     "role": "designer",
-    "uid": "f6fdffe48c908deb0f4c3bd36c032e72",
-    "master": "f6fdffe48c908deb0f4c3bd36c032e72"
+    "uid": "05a671c66aefea124cc08b76ea6d30bb",
+    "master": "05a671c66aefea124cc08b76ea6d30bb",
+    "timestamp": "01/01/1970, 00:00:00 AM"
 }]
