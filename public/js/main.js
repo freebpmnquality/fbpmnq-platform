@@ -191,6 +191,12 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
         $('#recommendations').append('<div class="alert alert-light" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' +
             'Process <b>"' + processName + '"</b>' + '</div>');
 
+        metaData = {
+            process: 0,
+            event: 0,
+            motivation: 0
+        };
+
         for (let i = 0; i < process.length; i++) {
             // [start] Tasks analysis
             if (process[i].nodeName.toLowerCase().includes('task'.toLowerCase()) ||
@@ -199,6 +205,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['id'].nodeValue :
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                metaData.process++;
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -251,6 +259,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['id'].nodeValue :
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                metaData.event++;
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -365,6 +375,10 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['id'].nodeValue :
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
+
+                if (!process[i].nodeName.toLowerCase().includes('parallelGateway'.toLowerCase())) {
+                    metaData.motivation++;
+                }
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -510,7 +524,8 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
             measures: warnings,
             uid: uid,
             raw: bpmnXML,
-            file: fileName
+            file: fileName,
+            metadata: metaData
         });
 
         $('#recommendations').append('<p><button type="button" onclick="saveReport(' + k + ');" class="btn btn-info btn-sm">Report</button></p>');
