@@ -4,7 +4,7 @@ function saveReport(report) {
     var content = fs.readFileSync("./quality/database.json", "utf8");
     var results = JSON.parse(content);
 
-    report.id = Math.max.apply(Math, results.map(function(o) { return o.id; })) + 1;
+    report.id = results.length;
 
     results.push(report);
 

@@ -4,7 +4,7 @@ function uploadModel(bpmnModel, fileName, userId) {
     var data = fs.readFileSync("./model/database.json", "utf8");
     var models = JSON.parse(data);
 
-    var modelId = Math.max.apply(Math, models.map(function(o) { return o.id; })) + 1;
+    var modelId = models.length;
 
     var model = {
         id: modelId,
