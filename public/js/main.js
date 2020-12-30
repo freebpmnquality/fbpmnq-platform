@@ -192,9 +192,9 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
             'Process <b>"' + processName + '"</b>' + '</div>');
 
         metaData = {
-            process: 0,
-            event: 0,
-            motivation: 0
+            process: [],
+            event: [],
+            motivation: []
         };
 
         for (let i = 0; i < process.length; i++) {
@@ -206,7 +206,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
-                metaData.process++;
+                metaData.process.push(name);
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -260,7 +260,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
-                metaData.event++;
+                metaData.event.push(name);
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -377,7 +377,7 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
                 if (!process[i].nodeName.toLowerCase().includes('parallelGateway'.toLowerCase())) {
-                    metaData.motivation++;
+                    metaData.motivation.push(name);
                 }
 
                 let incoming = 0;
