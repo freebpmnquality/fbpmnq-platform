@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 function checkUser(login, password) {
-    var content = fs.readFileSync("./user/database.json", "utf8");
+    var content = fs.readFileSync("./user/user.json", "utf8");
     var users = JSON.parse(content);
     var user = null;
 
@@ -16,7 +16,7 @@ function checkUser(login, password) {
 }
 
 function verifyUser(uid) {
-    var content = fs.readFileSync("./user/database.json", "utf8");
+    var content = fs.readFileSync("./user/user.json", "utf8");
     var users = JSON.parse(content);
     var user = null;
 

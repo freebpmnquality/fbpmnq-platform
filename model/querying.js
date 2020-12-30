@@ -1,14 +1,14 @@
 var fs = require("fs");
 
 function getAllModels() {
-    var data = fs.readFileSync("./model/database.json", "utf8");
+    var data = fs.readFileSync("./model/model.json", "utf8");
     var models = JSON.parse(data);
 
     return models;
 }
 
 function getAllModelsByUserId(uid) {
-    var data = fs.readFileSync("./model/database.json", "utf8");
+    var data = fs.readFileSync("./model/model.json", "utf8");
     var models = JSON.parse(data);
 
     var results = [];

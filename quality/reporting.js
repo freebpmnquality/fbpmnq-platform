@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 function saveReport(report) {
-    var content = fs.readFileSync("./quality/database.json", "utf8");
+    var content = fs.readFileSync("./quality/quality.json", "utf8");
     var results = JSON.parse(content);
 
     report.id = results.length;
@@ -9,11 +9,11 @@ function saveReport(report) {
     results.push(report);
 
     var data = JSON.stringify(results);
-    fs.writeFileSync("./quality/database.json", data);
+    fs.writeFileSync("./quality/quality.json", data);
 }
 
 function getAllReports(uid) {
-    var content = fs.readFileSync("./quality/database.json", "utf8");
+    var content = fs.readFileSync("./quality/quality.json", "utf8");
     var reports = JSON.parse(content);
 
     var results = [];
@@ -28,7 +28,7 @@ function getAllReports(uid) {
 }
 
 function getReportById(id) {
-    var content = fs.readFileSync("./quality/database.json", "utf8");
+    var content = fs.readFileSync("./quality/quality.json", "utf8");
     var reports = JSON.parse(content);
 
     var result = null;

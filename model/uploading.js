@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 function uploadModel(bpmnModel, fileName, userId) {
-    var data = fs.readFileSync("./model/database.json", "utf8");
+    var data = fs.readFileSync("./model/model.json", "utf8");
     var models = JSON.parse(data);
 
     var modelId = models.length;
@@ -17,7 +17,7 @@ function uploadModel(bpmnModel, fileName, userId) {
     models.push(model);
 
     var data = JSON.stringify(models);
-    fs.writeFileSync("./model/database.json", data);
+    fs.writeFileSync("./model/model.json", data);
 }
 
 function uploadModelFeatures(bpmnModel, fileName, userId, metadata, measures) {
