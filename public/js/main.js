@@ -206,7 +206,9 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
-                metaData.process.push(name);
+                if (process[i].attributes['name'] !== undefined && process[i].attributes['name'].nodeValue !== '') {
+                    metaData.process.push(name);
+                }
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -260,7 +262,9 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
-                metaData.event.push(name);
+                if (process[i].attributes['name'] !== undefined && process[i].attributes['name'].nodeValue !== '') {
+                    metaData.event.push(name);
+                }
 
                 let incoming = 0;
                 let outgoing = 0;
@@ -376,8 +380,10 @@ function bpmnValidation(xmlDoc, prefix, overlays, elementRegistry, bpmnXML) {
                     process[i].attributes['name'].nodeValue;
                 name = name === '' ? process[i].attributes['id'].nodeValue : name;
 
-                if (!process[i].nodeName.toLowerCase().includes('parallelGateway'.toLowerCase())) {
-                    metaData.motivation.push(name);
+                if (process[i].attributes['name'] !== undefined && process[i].attributes['name'].nodeValue !== '') {
+                    if (!process[i].nodeName.toLowerCase().includes('parallelGateway'.toLowerCase())) {
+                        metaData.motivation.push(name);
+                    }
                 }
 
                 let incoming = 0;
