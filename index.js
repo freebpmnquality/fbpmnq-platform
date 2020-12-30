@@ -69,6 +69,12 @@ app.get("/api/model/querying/all/:uid", function(req, res) {
     res.send(querying.getAllModelsByUserId(uid));
 });
 
+app.get("/api/model/querying/features/:uid", function(req, res) {
+    var uid = req.params.uid;
+
+    res.send(querying.getAllModelsWithFeatures(uid));
+});
+
 app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var process = req.body.process;
     var measures = req.body.measures;

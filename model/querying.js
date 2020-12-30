@@ -22,5 +22,13 @@ function getAllModelsByUserId(uid) {
     return results;
 }
 
+function getAllModelsWithFeatures(uid) {
+    var models = getAllModelsByUserId(uid);
+    var results = models;
+
+    return results;
+}
+
 module.exports.getAllModels = getAllModels;
 module.exports.getAllModelsByUserId = getAllModelsByUserId;
+module.exports.getAllModelsWithFeatures = getAllModelsWithFeatures;
