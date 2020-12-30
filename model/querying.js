@@ -22,13 +22,21 @@ function getAllModelsByUserId(uid) {
     return results;
 }
 
-function getAllModelsWithFeatures(uid) {
-    var models = getAllModelsByUserId(uid);
-    var results = models;
+function getAllModelFeatures(uid) {
+    var data = fs.readFileSync("./model/search.json", "utf8");
+    var models = JSON.parse(data);
+
+    var results = [];
+
+    for (var i = 0; i < models.length; i++) {
+        if (models[i].uid === uid) {
+            results.push(models[i]);
+        }
+    }
 
     return results;
 }
 
 module.exports.getAllModels = getAllModels;
 module.exports.getAllModelsByUserId = getAllModelsByUserId;
-module.exports.getAllModelsWithFeatures = getAllModelsWithFeatures;
+module.exports.getAllModelFeatures = getAllModelFeatures;
