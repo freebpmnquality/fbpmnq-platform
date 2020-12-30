@@ -72,7 +72,7 @@ app.get("/api/model/querying/all/:uid", function(req, res) {
 app.get("/api/model/querying/features/:uid", function(req, res) {
     var uid = req.params.uid;
 
-    res.send(querying.getAllModelsWithFeatures(uid));
+    res.send(querying.getAllModelFeatures(uid));
 });
 
 app.post("/api/quality/assessment", jsonParser, function(req, res) {
@@ -81,6 +81,8 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
     var uid = req.body.uid;
     var raw = req.body.raw;
     var file = req.body.file;
+
+    var metadata = req.body.metadata;
 
     var discrete = measurement.calculateDiscreteCriteria(measures);
     var continuous = measurement.calculateContinuousCriteria(measures);
@@ -94,6 +96,8 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
     report["file"] = file;
 
     reporting.saveReport(report);
+
+    uploading.uploadModelFeatures(raw, file, uid, metadata, report.measures.discrete);
 
     res.send(report);
 });
