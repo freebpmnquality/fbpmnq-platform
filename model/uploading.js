@@ -34,7 +34,8 @@ function uploadModelFeatures(bpmnModel, fileName, userId, metadata, report) {
         timestamp: new Date().toLocaleString(),
         metadata: metadata,
         measures: report.measures,
-        quality: report.quality
+        quality: report.quality,
+        process: report.process
     };
 
     features.push(feature);
