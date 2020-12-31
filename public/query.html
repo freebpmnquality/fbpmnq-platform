@@ -46,8 +46,38 @@
         <div class="row">
             <div class="col-sm-12">
                 <h5>Querying</h5>
-                <form onsubmit="return queryModels();">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <form class="form-inline" onsubmit="return queryModels();">
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Process Feature</div>
+                        </div>
+                        <select class="form-control" id="qFeature">
+                            <option value="all">--- All ---</option>
+                            <option value="event">When? (Time)</option>
+                            <option value="motivation">Why? (Motivation)</option>
+                            <option value="process">How? (Activity)</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Measure Type</div>
+                        </div>
+                        <select class="form-control" id="qType">
+                            <option value="discrete">Discrete</option>
+                            <option value="continuous">Continuous</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Model</div>
+                        </div>
+                        <select class="form-control" id="qModel">
+                            <option value="wsml">Optimistic (Weighted Sum)</option>
+                            <option value="minl">Pessimistic (Minimax)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mb-2">Submit</button>
                 </form>
 
                 <div id="results">
@@ -64,70 +94,84 @@
     <script src="js/verification.js"></script>
 
     <script>
-        var matrix = {
-            process: {},
-            event: {},
-            motivation: {}
-        };
+        function queryModels() {
+            $.ajax({
+                url: "/api/model/querying/features/" + uid,
+                type: "GET",
+                contentType: "application/json",
+                success: function(results) {
+                    $("#results").empty();
 
-        $.ajax({
-            url: "/api/model/querying/features/" + uid,
-            type: "GET",
-            contentType: "application/json",
-            success: function(results) {
-                console.log(results);
+                    var matrix = {
+                        process: {},
+                        event: {},
+                        motivation: {}
+                    };
 
-                var measureType = "discrete";
-                var qualityModel = "wsml";
+                    var measureType = $("#qType").val();
+                    var qualityModel = $("#qModel").val();
 
-                for (var i = 0; i < results.length; i++) {
-                    for (var j in matrix) {
-                        for (var k = 0; k < results[i].metadata[j].length; k++) {
-                            matrix[j][results[i].metadata[j][k]] = [];
+                    for (var i = 0; i < results.length; i++) {
+                        for (var j in matrix) {
+                            if (j === $("#qFeature").val() || $("#qFeature").val() === "all") {
+                                for (var k = 0; k < results[i].metadata[j].length; k++) {
+                                    matrix[j][results[i].metadata[j][k]] = [];
 
-                            matrix[j][results[i].metadata[j][k]].push({
-                                measures: results[i].measures[measureType],
-                                quality: results[i].quality[measureType][qualityModel],
-                                file: results[i].file,
-                                process: results[i].process,
-                                timestamp: results[i].timestamp
-                            });
+                                    matrix[j][results[i].metadata[j][k]].push({
+                                        measures: results[i].measures[measureType],
+                                        quality: results[i].quality[measureType][qualityModel],
+                                        file: results[i].file,
+                                        process: results[i].process,
+                                        timestamp: results[i].timestamp
+                                    });
+                                }
+                            }
                         }
                     }
-                }
-            }
-        });
 
-        function queryModels() {
-            console.log(matrix);
+                    for (var aspect in matrix) {
+                        for (var i in matrix[aspect]) {
+                            var item = `<br><div class="card">
+                                <div class="card-header">
+                                    ` + aspect + `
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title">` + i + `</h6>`;
 
-            for (var aspect in matrix) {
-                for (var i in matrix[aspect]) {
-                    var item = `<br><div class="card">
-                        <div class="card-header">
-                            ` + aspect + `
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">` + i + `</h5>`;
+                            item += `<table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Timestamp</th>
+                                    <th scope="col">File</th>
+                                    <th scope="col">Process</th>
+                                    <th scope="col">Quality</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
 
-                    item += `<table>`;
+                            for (var j = 0; j < matrix[aspect][i].length; j++) {
+                                item += `<tr>
+                                        <td>` + matrix[aspect][i][j].timestamp + `</td>
+                                        <td>` + matrix[aspect][i][j].file + `</td>
+                                        <td>` + matrix[aspect][i][j].process + `</td>
+                                        <td>` + matrix[aspect][i][j].quality + `</td>
+                                    </tr>`;
+                            }
 
-                    for (var j = 0; j < matrix[aspect][i].length; j++) {
-                        item += `<tr>
-                                <td>` + matrix[aspect][i][j].timestamp + `</td>
-                                <td>` + matrix[aspect][i][j].file + `</td>
-                                <td>` + matrix[aspect][i][j].process + `</td>
-                                <td>` + matrix[aspect][i][j].quality + `</td>
-                            </tr>`;
+                            item += `</tbody>
+                                </table>
+                                </div>
+                                </div>`;
+
+                            $("#results").append(item);
+                        }
                     }
 
-                    item += `</table>
-                        </div>
-                        </div>`;
-
-                    $("#results").append(item);
+                    if ($("#results").html() === "") {
+                        $("#results").append("Query has not returned results");
+                    }
                 }
-            }
+            });
 
             return false;
         }
