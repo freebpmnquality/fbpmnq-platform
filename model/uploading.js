@@ -20,7 +20,7 @@ function uploadModel(bpmnModel, fileName, userId) {
     fs.writeFileSync("./model/model.json", data);
 }
 
-function uploadModelFeatures(bpmnModel, fileName, userId, metadata, measures) {
+function uploadModelFeatures(bpmnModel, fileName, userId, metadata, report) {
     var data = fs.readFileSync("./model/search.json", "utf8");
     var features = JSON.parse(data);
 
@@ -33,7 +33,8 @@ function uploadModelFeatures(bpmnModel, fileName, userId, metadata, measures) {
         uid: userId,
         timestamp: new Date().toLocaleString(),
         metadata: metadata,
-        measures: measures
+        measures: report.measures,
+        quality: report.quality
     };
 
     features.push(feature);

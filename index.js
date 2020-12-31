@@ -97,7 +97,7 @@ app.post("/api/quality/assessment", jsonParser, function(req, res) {
 
     reporting.saveReport(report);
 
-    uploading.uploadModelFeatures(raw, file, uid, metadata, report.measures.discrete);
+    uploading.uploadModelFeatures(raw, file, uid, metadata, report);
 
     res.send(report);
 });
