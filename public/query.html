@@ -269,6 +269,15 @@
                         xmlDoc.loadXML(raw);
                     }
 
+                    var labelTokens = label.split(/\s+/);
+                    var selector = "text";
+
+                    for (var i = 0; i < labelTokens.length; i++) {
+                        selector += ":contains(" + labelTokens[i] + ")";
+                    }
+
+                    $(selector).css("fill", "red");
+
                     var mywindow = window.open('', 'PRINT', 'height=480,width=640');
 
                     mywindow.document.write('<html><head><title>' + label + " : " + id + '</title>');
