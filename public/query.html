@@ -217,7 +217,7 @@
                             for (var j = 0; j < matrix[aspect][i].length; j++) {
                                 item += `<tr>
                                         <td>` + matrix[aspect][i][j].timestamp + `</td>
-                                        <td><a href="javascript:void(0);" onclick="showModel('` + matrix[aspect][i][j].file + "_" + matrix[aspect][i][j].timestamp + `');">` + matrix[aspect][i][j].file + `</a></td>
+                                        <td><a href="javascript:void(0);" onclick="showModel('` + i + `', '` + matrix[aspect][i][j].file + "_" + matrix[aspect][i][j].timestamp + `');">` + matrix[aspect][i][j].file + `</a></td>
                                         <td>` + matrix[aspect][i][j].process + `</td>
                                         <td>` + matrix[aspect][i][j].quality + `</td>
                                     </tr>`;
@@ -241,7 +241,7 @@
             return false;
         }
 
-        function showModel(id) {
+        function showModel(label, id) {
             $("#canvas").empty();
 
             raw = bpmnFiles[id];
@@ -271,7 +271,7 @@
 
                     var mywindow = window.open('', 'PRINT', 'height=480,width=640');
 
-                    mywindow.document.write('<html><head><title>' + id + '</title>');
+                    mywindow.document.write('<html><head><title>' + label + " : " + id + '</title>');
                     mywindow.document.write('</head><body>');
                     mywindow.document.write(document.getElementById("modelDisplayed").innerHTML);
                     mywindow.document.write('</body></html>');
