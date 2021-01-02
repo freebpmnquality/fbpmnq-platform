@@ -122,7 +122,10 @@
 
                 <div id="results">
                 </div>
-                <br>
+
+                <div id="modelDisplayed" style="visibility: hidden;">
+                    <div id="canvas"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -135,6 +138,8 @@
     <script src="js/verification.js"></script>
 
     <script>
+        var bpmnFiles = {};
+
         function queryModels() {
             $.ajax({
                 url: "/api/model/querying/features/" + uid,
@@ -157,7 +162,7 @@
                             if (
                                 (j === $("#qFeature").val() || $("#qFeature").val() === "all") &&
                                 (results[i].quality[measureType][qualityModel] === $("#qLevel").val() || $("#qLevel").val() === "all") &&
-                                (results[i].measures.discrete[$("#qCriteria").val()].toString() === $("#qValue").val() || $("#qCriteria").val() === "all")
+                                (results[i].measures.discrete[$("#qCriteria").val()] === parseInt($("#qValue").val()) || $("#qCriteria").val() === "all")
                             ) {
                                 for (var k = 0; k < results[i].metadata[j].length; k++) {
                                     if (matrix[j][results[i].metadata[j][k]] === undefined) {
@@ -178,8 +183,11 @@
                                             quality: results[i].quality[measureType][qualityModel],
                                             file: results[i].file,
                                             process: results[i].process,
-                                            timestamp: results[i].timestamp
+                                            timestamp: results[i].timestamp,
+                                            raw: results[i].raw
                                         });
+
+                                        bpmnFiles[results[i].file + "_" + results[i].timestamp] = results[i].raw;
                                     }
                                 }
                             }
@@ -209,7 +217,7 @@
                             for (var j = 0; j < matrix[aspect][i].length; j++) {
                                 item += `<tr>
                                         <td>` + matrix[aspect][i][j].timestamp + `</td>
-                                        <td>` + matrix[aspect][i][j].file + `</td>
+                                        <td><a href="javascript:void(0);" onclick="showModel('` + matrix[aspect][i][j].file + "_" + matrix[aspect][i][j].timestamp + `');">` + matrix[aspect][i][j].file + `</a></td>
                                         <td>` + matrix[aspect][i][j].process + `</td>
                                         <td>` + matrix[aspect][i][j].quality + `</td>
                                     </tr>`;
@@ -227,6 +235,49 @@
                     if ($("#results").html() === "") {
                         $("#results").append("Query has not returned results");
                     }
+                }
+            });
+
+            return false;
+        }
+
+        function showModel(id) {
+            $("#canvas").empty();
+
+            raw = bpmnFiles[id];
+
+            var viewer = new BpmnJS({
+                container: '#canvas'
+            });
+
+            viewer.importXML(raw, function(err) {
+                if (err) {
+                    $('#canvas').append('<div class="alert alert-danger" style="padding: 5px; margin-bottom: 5px; font-size: 14px;">' + err + '</div>');
+                } else {
+                    let canvas = viewer.get('canvas');
+
+                    canvas.zoom('fit-viewport');
+
+                    let xmlDoc = null;
+
+                    if (window.DOMParser) {
+                        let parser = new DOMParser();
+                        xmlDoc = parser.parseFromString(raw, 'text/xml');
+                    } else {
+                        xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+                        xmlDoc.async = false;
+                        xmlDoc.loadXML(raw);
+                    }
+
+                    var mywindow = window.open('', 'PRINT', 'height=480,width=640');
+
+                    mywindow.document.write('<html><head><title>' + id + '</title>');
+                    mywindow.document.write('</head><body>');
+                    mywindow.document.write(document.getElementById("modelDisplayed").innerHTML);
+                    mywindow.document.write('</body></html>');
+
+                    mywindow.document.close();
+                    mywindow.focus();
                 }
             });
 
