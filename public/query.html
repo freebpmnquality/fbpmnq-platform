@@ -49,17 +49,6 @@
                 <form class="form-inline" onsubmit="return queryModels();">
                     <div class="input-group mb-2 mr-sm-2">
                         <div class="input-group-prepend">
-                            <div class="input-group-text">Process Feature</div>
-                        </div>
-                        <select class="form-control" id="qFeature">
-                            <option value="all">--- All ---</option>
-                            <option value="event">When? (Time)</option>
-                            <option value="motivation">Why? (Motivation)</option>
-                            <option value="process">How? (Activity)</option>
-                        </select>
-                    </div>
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
                             <div class="input-group-text">Measure Type</div>
                         </div>
                         <select class="form-control" id="qType">
@@ -77,11 +66,63 @@
                         </select>
                     </div>
 
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Process Feature</div>
+                        </div>
+                        <select class="form-control" id="qFeature">
+                            <option value="all">--- All ---</option>
+                            <option value="event">When? (Time)</option>
+                            <option value="motivation">Why? (Motivation)</option>
+                            <option value="process">How? (Activity)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Quality Level</div>
+                        </div>
+                        <select class="form-control" id="qLevel">
+                            <option value="all">--- All ---</option>
+                            <option value="Good">Good</option>
+                            <option value="Well">Well</option>
+                            <option value="Satisfied">Satisfied</option>
+                            <option value="Poor">Poor</option>
+                            <option value="Bad">Bad</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Quality Criteria</div>
+                        </div>
+                        <select class="form-control" id="qCriteria">
+                            <option value="all">--- All ---</option>
+                            <option value="R1">Process Size (R1)</option>
+                            <option value="R2">Sequence Flows (R2)</option>
+                            <option value="R3">Start and End Events (R3)</option>
+                            <option value="R4">Process Structuredness (R4)</option>
+                            <option value="R5">Routing Certainty (R5)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Quality Criteria Value</div>
+                        </div>
+                        <select class="form-control" id="qValue">
+                            <option value="all">--- All ---</option>
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
+                        </select>
+                    </div>
+
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
                 </form>
 
                 <div id="results">
                 </div>
+                <br>
             </div>
         </div>
     </div>
@@ -113,17 +154,33 @@
 
                     for (var i = 0; i < results.length; i++) {
                         for (var j in matrix) {
-                            if (j === $("#qFeature").val() || $("#qFeature").val() === "all") {
+                            if (
+                                (j === $("#qFeature").val() || $("#qFeature").val() === "all") &&
+                                (results[i].quality[measureType][qualityModel] === $("#qLevel").val() || $("#qLevel").val() === "all") &&
+                                (results[i].measures.discrete[$("#qCriteria").val()].toString() === $("#qValue").val() || $("#qCriteria").val() === "all")
+                            ) {
                                 for (var k = 0; k < results[i].metadata[j].length; k++) {
-                                    matrix[j][results[i].metadata[j][k]] = [];
+                                    if (matrix[j][results[i].metadata[j][k]] === undefined) {
+                                        matrix[j][results[i].metadata[j][k]] = [];
+                                    }
 
-                                    matrix[j][results[i].metadata[j][k]].push({
-                                        measures: results[i].measures[measureType],
-                                        quality: results[i].quality[measureType][qualityModel],
-                                        file: results[i].file,
-                                        process: results[i].process,
-                                        timestamp: results[i].timestamp
-                                    });
+                                    var addRow = true;
+
+                                    for (var q = 0; q < matrix[j][results[i].metadata[j][k]].length; q++) {
+                                        if (matrix[j][results[i].metadata[j][k]][q].timestamp === results[i].timestamp) {
+                                            addRow = false;
+                                        }
+                                    }
+
+                                    if (addRow) {
+                                        matrix[j][results[i].metadata[j][k]].push({
+                                            measures: results[i].measures[measureType],
+                                            quality: results[i].quality[measureType][qualityModel],
+                                            file: results[i].file,
+                                            process: results[i].process,
+                                            timestamp: results[i].timestamp
+                                        });
+                                    }
                                 }
                             }
                         }
