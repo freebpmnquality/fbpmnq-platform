@@ -117,6 +117,15 @@
                         </select>
                     </div>
 
+                    <div class="input-group mb-2 mr-sm-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">Model File</div>
+                        </div>
+                        <select class="form-control" id="qFile">
+                            <option value="all">--- All ---</option>
+                        </select>
+                    </div>
+
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
                 </form>
 
@@ -138,6 +147,25 @@
     <script src="js/verification.js"></script>
 
     <script>
+        $.ajax({
+            url: "/api/model/querying/features/" + uid,
+            type: "GET",
+            contentType: "application/json",
+            success: function(results) {
+                var files = [];
+
+                for (var i = 0; i < results.length; i++) {
+                    if (!files.includes(results[i].file)) {
+                        files.push(results[i].file);
+                    }
+                }
+
+                for (var i = 0; i < files.length; i++) {
+                    $("#qFile").append("<option>" + files[i] + "</option>");
+                }
+            }
+        });
+
         var bpmnFiles = {};
 
         function queryModels() {
@@ -162,7 +190,8 @@
                             if (
                                 (j === $("#qFeature").val() || $("#qFeature").val() === "all") &&
                                 (results[i].quality[measureType][qualityModel] === $("#qLevel").val() || $("#qLevel").val() === "all") &&
-                                (results[i].measures.discrete[$("#qCriteria").val()] === parseInt($("#qValue").val()) || $("#qCriteria").val() === "all")
+                                (results[i].measures.discrete[$("#qCriteria").val()] === parseInt($("#qValue").val()) || $("#qCriteria").val() === "all") &&
+                                (results[i].file === $("#qFile").val() || $("#qFile").val() === "all")
                             ) {
                                 for (var k = 0; k < results[i].metadata[j].length; k++) {
                                     if (matrix[j][results[i].metadata[j][k]] === undefined) {
