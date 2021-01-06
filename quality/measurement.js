@@ -21,7 +21,7 @@ function calculateDiscreteCriteria(measures) {
 function calculateContinuousCriteria(measures) {
     var r1 = measures.totalNodes <= 31 ? 1 : (31 / measures.totalNodes);
 
-    var r2 = measures.totalNodes === 0 ? 0 :
+    var r2 = measures.totalNodes === 0 ? 1 :
         1 - (measures.invalidTasks + measures.invalidEvents + measures.uncertainGateways) / measures.totalNodes;
 
     var r3 = Math.min(1 / (1 + Math.pow(measures.startEvents - 1, 2)), 1 / (1 + Math.pow(measures.endEvents - 1, 2)));
