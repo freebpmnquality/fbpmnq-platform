@@ -21,13 +21,14 @@ function calculateDiscreteCriteria(measures) {
 function calculateContinuousCriteria(measures) {
     var r1 = measures.totalNodes <= 31 ? 1 : (31 / measures.totalNodes);
 
-    var r2 = 1 - (measures.invalidTasks + measures.invalidEvents + measures.uncertainGateways) / measures.totalNodes;
+    var r2 = measures.totalNodes === 0 ? 0 :
+        1 - (measures.invalidTasks + measures.invalidEvents + measures.uncertainGateways) / measures.totalNodes;
 
     var r3 = Math.min(1 / (1 + Math.pow(measures.startEvents - 1, 2)), 1 / (1 + Math.pow(measures.endEvents - 1, 2)));
 
-    var r4 = measures.gatewaysMismatch === 0 ? 1 : 1 - (measures.mismatchedGateways / measures.totalGateways);
+    var r4 = measures.totalGateways === 0 ? 1 : 1 - (measures.mismatchedGateways / measures.totalGateways);
 
-    var r5 = measures.inclusiveGateways === 0 ? 1 : 1 - (measures.inclusiveGateways / measures.totalGateways);
+    var r5 = measures.totalGateways === 0 ? 1 : 1 - (measures.inclusiveGateways / measures.totalGateways);
 
     return {
         "R1": r1,
