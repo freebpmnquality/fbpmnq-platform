@@ -13,6 +13,16 @@ var stream = fs.createWriteStream("./statistics/" + folder + ".csv");
 stream.once("open", function(fd) {
     console.log("Processing BPMN models:");
 
+    stream.write(
+        "file," +
+
+        "d.R1,d.R2,d.R3,d.R4,d.R5," +
+        "c.R1,c.R2,c.R3,c.R4,c.R5," +
+
+        "d.wsm,d.min,d.wsml,d.minl," +
+        "c.wsm,c.min,c.wsml,c.minl\n"
+    );
+
     fs.readdirSync(path).forEach(file => {
         var xmlModel = fs.readFileSync(path + file, "utf8");
         var measuresList = parser.parse(xmlModel);
