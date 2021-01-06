@@ -1,18 +1,20 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const parser = require('./model/parser')
+const parser = require("./model/parser")
 const measurement = require("./quality/measurement");
-const assessment = require('./quality/assessment');
+const assessment = require("./quality/assessment");
 
-const folder = './repository/dispatch/';
+const args = process.argv.slice(2);
+const folder = args[0];
+const path = "./repository/" + folder + "/";
 
-var stream = fs.createWriteStream('./statistics.csv');
+var stream = fs.createWriteStream("./statistics/" + folder + ".csv");
 
-stream.once('open', function(fd) {
+stream.once("open", function(fd) {
     console.log("Processing BPMN models:");
 
-    fs.readdirSync(folder).forEach(file => {
-        var xmlModel = fs.readFileSync(folder + file, 'utf8');
+    fs.readdirSync(path).forEach(file => {
+        var xmlModel = fs.readFileSync(path + file, "utf8");
         var measuresList = parser.parse(xmlModel);
 
         for (var k in measuresList) {
