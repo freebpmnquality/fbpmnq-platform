@@ -223,43 +223,38 @@
                         }
                     }
 
+                    var item = `<table class="table table-hover">
+                            <thead>
+                                <tr>
+                                <th scope="col"><small class="text-muted">Element</small></th>
+                                <th scope="col"><small class="text-muted">Label</small></th>
+                                <th scope="col"><small class="text-muted">Timestamp</small></th>
+                                <th scope="col"><small class="text-muted">File</small></th>
+                                <th scope="col"><small class="text-muted">Process</small></th>
+                                <th scope="col"><small class="text-muted">Quality</small></th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
                     for (var aspect in matrix) {
                         for (var i in matrix[aspect]) {
-                            var item = `<br><div class="card">
-                                <div class="card-header">
-                                    ` + aspect + `
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="card-title">` + i + `</h6>`;
-
-                            item += `<table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                    <th scope="col">Timestamp</th>
-                                    <th scope="col">File</th>
-                                    <th scope="col">Process</th>
-                                    <th scope="col">Quality</th>
-                                    </tr>
-                                </thead>
-                                <tbody>`;
-
                             for (var j = 0; j < matrix[aspect][i].length; j++) {
                                 item += `<tr>
-                                        <td>` + matrix[aspect][i][j].timestamp + `</td>
+                                        <td>` + aspect + `</td>
+                                        <td>` + i + `</td>
+                                        <td><small>` + matrix[aspect][i][j].timestamp + `</small></td>
                                         <td><a href="javascript:void(0);" onclick="showModel('` + i + `', '` + matrix[aspect][i][j].file + "_" + matrix[aspect][i][j].timestamp + `');">` + matrix[aspect][i][j].file + `</a></td>
                                         <td>` + matrix[aspect][i][j].process + `</td>
                                         <td>` + matrix[aspect][i][j].quality + `</td>
                                     </tr>`;
                             }
-
-                            item += `</tbody>
-                                </table>
-                                </div>
-                                </div>`;
-
-                            $("#results").append(item);
                         }
                     }
+
+                    item += `</tbody>
+                        </table>`;
+
+                    $("#results").append(item);
 
                     if ($("#results").html() === "") {
                         $("#results").append("Query has not returned results");
