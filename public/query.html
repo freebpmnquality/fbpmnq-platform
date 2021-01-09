@@ -223,7 +223,7 @@
                         }
                     }
 
-                    var item = `<table class="table table-hover">
+                    var resultsTable = `<table class="table table-hover">
                             <thead>
                                 <tr>
                                 <th scope="col"><small class="text-muted">Element</small></th>
@@ -239,7 +239,7 @@
                     for (var aspect in matrix) {
                         for (var i in matrix[aspect]) {
                             for (var j = 0; j < matrix[aspect][i].length; j++) {
-                                item += `<tr>
+                                resultsTable += `<tr>
                                         <td>` + aspect + `</td>
                                         <td>` + i + `</td>
                                         <td><small>` + matrix[aspect][i][j].timestamp + `</small></td>
@@ -251,10 +251,10 @@
                         }
                     }
 
-                    item += `</tbody>
+                    resultsTable += `</tbody>
                         </table>`;
 
-                    $("#results").append(item);
+                    $("#results").append(resultsTable);
 
                     if ($("#results").html() === "") {
                         $("#results").append("Query has not returned results");
