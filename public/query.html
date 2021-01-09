@@ -46,84 +46,101 @@
         <div class="row">
             <div class="col-sm-12">
                 <h5>Querying</h5>
-                <form class="form-inline" onsubmit="return queryModels();">
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Measure Type</div>
+                <form class="form" onsubmit="return queryModels();">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Measure Type</div>
+                                </div>
+                                <select class="form-control" id="qType">
+                                    <option value="discrete">Discrete</option>
+                                    <option value="continuous">Continuous</option>
+                                </select>
+                            </div>
                         </div>
-                        <select class="form-control" id="qType">
-                            <option value="discrete">Discrete</option>
-                            <option value="continuous">Continuous</option>
-                        </select>
-                    </div>
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Model</div>
+                        <div class="col">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Model</div>
+                                </div>
+                                <select class="form-control" id="qModel">
+                                    <option value="wsml">Optimistic (Weighted Sum)</option>
+                                    <option value="minl">Pessimistic (Minimax)</option>
+                                </select>
+                            </div>
                         </div>
-                        <select class="form-control" id="qModel">
-                            <option value="wsml">Optimistic (Weighted Sum)</option>
-                            <option value="minl">Pessimistic (Minimax)</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Process Feature</div>
-                        </div>
-                        <select class="form-control" id="qFeature">
-                            <option value="all">--- All ---</option>
-                            <option value="event">When? (Time)</option>
-                            <option value="motivation">Why? (Motivation)</option>
-                            <option value="process">How? (Activity)</option>
-                        </select>
                     </div>
 
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Quality Level</div>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Process Feature</div>
+                                </div>
+                                <select class="form-control" id="qFeature">
+                                    <option value="all">--- All ---</option>
+                                    <option value="event">When? (Time)</option>
+                                    <option value="motivation">Why? (Motivation)</option>
+                                    <option value="process">How? (Activity)</option>
+                                </select>
+                            </div>
                         </div>
-                        <select class="form-control" id="qLevel">
-                            <option value="all">--- All ---</option>
-                            <option value="Good">Good</option>
-                            <option value="Well">Well</option>
-                            <option value="Satisfied">Satisfied</option>
-                            <option value="Poor">Poor</option>
-                            <option value="Bad">Bad</option>
-                        </select>
+                        <div class="col">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Modeling Rule</div>
+                                </div>
+                                <select class="form-control" id="qCriteria">
+                                    <option value="all">--- All ---</option>
+                                    <option value="R1">Avoid large models</option>
+                                    <option value="R2">Avoid wrongly connected elements</option>
+                                    <option value="R3">Avoid multiple start/end events</option>
+                                    <option value="R4">Avoid gateways mismatch</option>
+                                    <option value="R5">Avoid OR gateways</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rule Conformance</div>
+                                </div>
+                                <select class="form-control" id="qValue">
+                                    <option value="all">--- All ---</option>
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Quality Criteria</div>
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Process Model Quality</div>
+                                </div>
+                                <select class="form-control" id="qLevel">
+                                    <option value="all">--- All ---</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Well">Well</option>
+                                    <option value="Satisfied">Satisfied</option>
+                                    <option value="Poor">Poor</option>
+                                    <option value="Bad">Bad</option>
+                                </select>
+                            </div>
                         </div>
-                        <select class="form-control" id="qCriteria">
-                            <option value="all">--- All ---</option>
-                            <option value="R1">Process Size (R1)</option>
-                            <option value="R2">Sequence Flows (R2)</option>
-                            <option value="R3">Start and End Events (R3)</option>
-                            <option value="R4">Process Structuredness (R4)</option>
-                            <option value="R5">Routing Certainty (R5)</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Quality Criteria Value</div>
+                        <div class="col">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Process Model File</div>
+                                </div>
+                                <select class="form-control" id="qFile">
+                                    <option value="all">--- All ---</option>
+                                </select>
+                            </div>
                         </div>
-                        <select class="form-control" id="qValue">
-                            <option value="all">--- All ---</option>
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
-                    </div>
-
-                    <div class="input-group mb-2 mr-sm-2">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">Model File</div>
-                        </div>
-                        <select class="form-control" id="qFile">
-                            <option value="all">--- All ---</option>
-                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary mb-2">Submit</button>
