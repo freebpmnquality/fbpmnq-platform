@@ -48,10 +48,10 @@
                 <h5>Querying</h5>
                 <form class="form" onsubmit="return queryModels();">
                     <div class="form-row">
-                        <div class="col">
+                        <div class="col-md-4">
                             <div class="input-group mb-2 mr-sm-2">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Measure Type</div>
+                                    <div class="input-group-text">Quality Measure Type</div>
                                 </div>
                                 <select class="form-control" id="qType">
                                     <option value="discrete">Discrete</option>
@@ -62,11 +62,26 @@
                         <div class="col">
                             <div class="input-group mb-2 mr-sm-2">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">Model</div>
+                                    <div class="input-group-text">Quality Model Type</div>
                                 </div>
                                 <select class="form-control" id="qModel">
                                     <option value="wsml">Optimistic (Weighted Sum)</option>
                                     <option value="minl">Pessimistic (Minimax)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group mb-2 mr-sm-2">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Quality Level</div>
+                                </div>
+                                <select class="form-control" id="qLevel">
+                                    <option value="all">--- All ---</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Well">Well</option>
+                                    <option value="Satisfied">Satisfied</option>
+                                    <option value="Poor">Poor</option>
+                                    <option value="Bad">Bad</option>
                                 </select>
                             </div>
                         </div>
@@ -116,21 +131,6 @@
                     </div>
 
                     <div class="form-row">
-                        <div class="col">
-                            <div class="input-group mb-2 mr-sm-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">Process Model Quality</div>
-                                </div>
-                                <select class="form-control" id="qLevel">
-                                    <option value="all">--- All ---</option>
-                                    <option value="Good">Good</option>
-                                    <option value="Well">Well</option>
-                                    <option value="Satisfied">Satisfied</option>
-                                    <option value="Poor">Poor</option>
-                                    <option value="Bad">Bad</option>
-                                </select>
-                            </div>
-                        </div>
                         <div class="col">
                             <div class="input-group mb-2 mr-sm-2">
                                 <div class="input-group-prepend">
