@@ -88,27 +88,46 @@
             }
         });
 
+        var globalReport = null;
+
         function showDetails(id) {
             $.ajax({
                 url: "/api/reporting/get/" + id,
                 type: "GET",
                 contentType: "application/json",
                 success: function(report) {
+                    globalReport = report;
+
                     $("#details").html(`<div class="card">
                         <div class="card-header">` + report.process + `</div>
                         <div class="card-body">
                             <div class="alert alert-` + (report.quality.discrete.min === 1 ? "success" : "warning") + `" 
-                                role="alert">Correct: ` + (report.quality.discrete.min === 1 ? "Yes" : "No") + `</div>
+                                role="alert">General estimation: ` + (report.quality.discrete.min === 1 ? "correct" : "incorrect") + `</div>
 
-                            <div class="alert alert-` + (report.quality.discrete.min === 1 ? "success" : "warning") + `" 
-                                role="alert">Absolute quality (optimistic): ` + parseFloat(report.quality.discrete.wsm).toFixed(2) + ` (` + report.quality.discrete.wsml + `)</div>
-                            <div class="alert alert-` + (report.quality.discrete.min === 1 ? "success" : "warning") + `" 
-                                role="alert">Absolute quality (pessimistic): ` + parseFloat(report.quality.discrete.min).toFixed(2) + ` (` + report.quality.discrete.minl + `)</div>
+                            <p class="card-text">Select quality measure type</p>
+                            <p class="card-text">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="measureType" id="measureType" value="mDiscrete" checked onclick="seeQuality();">
+                                    <label class="form-check-label" for="measureType">Discrete</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="measureType" id="measureType" value="mContinuous" onclick="seeQuality();">
+                                    <label class="form-check-label" for="measureType">Continuous</label>
+                                </div>
+                            </p>
+                            <p class="card-text">Select quality model</p>
+                            <p class="card-text">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="modelType" id="modelType" value="qWsm" checked onclick="seeQuality();">
+                                    <label class="form-check-label" for="modelType">Optimistic (Weighted Sum)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="modelType" id="modelType" value="qMin" onclick="seeQuality();">
+                                    <label class="form-check-label" for="modelType">Pessimistic (Minimax)</label>
+                                </div>
+                            </p>
 
-                            <div class="alert alert-` + (report.quality.discrete.min === 1 ? "success" : "warning") + `" 
-                                role="alert">Relative quality (optimistic): ` + parseFloat(report.quality.continuous.wsm).toFixed(2) + ` (` + report.quality.continuous.wsml + `)</div>
-                            <div class="alert alert-` + (report.quality.discrete.min === 1 ? "success" : "warning") + `" 
-                                role="alert">Relative quality (pessimistic): ` + parseFloat(report.quality.continuous.min).toFixed(2) + ` (` + report.quality.continuous.minl + `)</div>
+                            <span id="qRes"></span>
 
                             <p class="card-text">Do not use a lot of elements or de-compose a model with a lot of elements if possible: 
                                 ` + (report.measures.discrete.R1 === 1 ? "Yes" : "No") + ` (` + report.measures.continuous.R1.toFixed(2) + `)</p>
@@ -153,6 +172,8 @@
                             }
                         }
                     });
+
+                    seeQuality();
                 }
             });
         }
@@ -171,6 +192,40 @@
             mywindow.print();
 
             return false;
+        }
+
+        function seeQuality() {
+            var measureType = $("#measureType:checked").val();
+            var modelType = $("#modelType:checked").val();
+
+            var results = {
+                "mDiscrete": {
+                    "qWsm": {
+                        "crisp": globalReport.quality.discrete.wsm,
+                        "ling": globalReport.quality.discrete.wsml
+                    },
+                    "qMin": {
+                        "crisp": globalReport.quality.discrete.min,
+                        "ling": globalReport.quality.discrete.minl
+                    }
+                },
+                "mContinuous": {
+                    "qWsm": {
+                        "crisp": globalReport.quality.continuous.wsm,
+                        "ling": globalReport.quality.continuous.wsml
+                    },
+                    "qMin": {
+                        "crisp": globalReport.quality.continuous.min,
+                        "ling": globalReport.quality.continuous.minl
+                    }
+                }
+            };
+
+            var crisp = results[measureType][modelType]["crisp"];
+            var ling = results[measureType][modelType]["ling"];
+
+            $("#qRes").html(`<div class="alert alert-` + (crisp === 1 ? "success" : "warning") + `" 
+                role="alert">Quality: ` + parseFloat(crisp).toFixed(2) + ` (` + ling + `)</div>`);
         }
     </script>
 </body>
