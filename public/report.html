@@ -108,22 +108,22 @@
                             <p class="card-text">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="measureType" id="measureType" value="mDiscrete" checked onclick="seeQuality();">
-                                    <label class="form-check-label" for="measureType">Discrete</label>
+                                    <label class="form-check-label" for="measureType">Hard (0 if a model corresponds to a rule, or 1 otherwise)</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="measureType" id="measureType" value="mContinuous" onclick="seeQuality();">
-                                    <label class="form-check-label" for="measureType">Continuous</label>
+                                    <label class="form-check-label" for="measureType">Soft (correspondence is measured within the 0-1 range)</label>
                                 </div>
                             </p>
                             <p class="card-text">Select quality model</p>
                             <p class="card-text">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="modelType" id="modelType" value="qWsm" checked onclick="seeQuality();">
-                                    <label class="form-check-label" for="modelType">Weighted Sum</label>
+                                    <label class="form-check-label" for="modelType">Allow compensation of poor measures by good ones (Weighted Sum)</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="modelType" id="modelType" value="qMin" onclick="seeQuality();">
-                                    <label class="form-check-label" for="modelType">Pessimistic</label>
+                                    <label class="form-check-label" for="modelType">Forbid compensation of poor measures by good ones (Min)</label>
                                 </div>
                             </p>
 
