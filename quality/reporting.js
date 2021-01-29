@@ -1,20 +1,19 @@
-var fs = require("fs");
+const StormDB = require("stormdb");
+
+const engine = new StormDB.localFileEngine("./quality/quality.json");
+const db = new StormDB(engine);
 
 function saveReport(report) {
-    var content = fs.readFileSync("./quality/quality.json", "utf8");
-    var results = JSON.parse(content);
+    var results = db.get("results").value();
 
     report.id = results.length;
 
-    results.push(report);
-
-    var data = JSON.stringify(results);
-    fs.writeFileSync("./quality/quality.json", data);
+    db.get("results").push(report);
+    db.save();
 }
 
 function getAllReports(uid) {
-    var content = fs.readFileSync("./quality/quality.json", "utf8");
-    var reports = JSON.parse(content);
+    var reports = db.get("results").value();
 
     var results = [];
 
@@ -28,8 +27,7 @@ function getAllReports(uid) {
 }
 
 function getReportById(id) {
-    var content = fs.readFileSync("./quality/quality.json", "utf8");
-    var reports = JSON.parse(content);
+    var reports = db.get("results").value();
 
     var result = null;
 
