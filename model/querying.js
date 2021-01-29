@@ -1,15 +1,19 @@
-var fs = require("fs");
+const StormDB = require("stormdb");
 
 function getAllModels() {
-    var data = fs.readFileSync("./model/model.json", "utf8");
-    var models = JSON.parse(data);
+    const engine = new StormDB.localFileEngine("./model/model.json");
+    const db = new StormDB(engine);
+
+    var models = db.get("models").value();
 
     return models;
 }
 
 function getAllModelsByUserId(uid) {
-    var data = fs.readFileSync("./model/model.json", "utf8");
-    var models = JSON.parse(data);
+    const engine = new StormDB.localFileEngine("./model/model.json");
+    const db = new StormDB(engine);
+
+    var models = db.get("models").value();
 
     var results = [];
 
@@ -23,8 +27,10 @@ function getAllModelsByUserId(uid) {
 }
 
 function getAllModelFeatures(uid) {
-    var data = fs.readFileSync("./model/search.json", "utf8");
-    var models = JSON.parse(data);
+    const engine = new StormDB.localFileEngine("./model/search.json");
+    const db = new StormDB(engine);
+
+    var models = db.get("features").value();
 
     var results = [];
 

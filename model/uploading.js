@@ -1,8 +1,10 @@
-var fs = require("fs");
+const StormDB = require("stormdb");
 
 function uploadModel(bpmnModel, fileName, userId) {
-    var data = fs.readFileSync("./model/model.json", "utf8");
-    var models = JSON.parse(data);
+    const engine = new StormDB.localFileEngine("./model/model.json");
+    const db = new StormDB(engine);
+
+    var models = db.get("models").value();
 
     var modelId = models.length;
 
@@ -14,15 +16,15 @@ function uploadModel(bpmnModel, fileName, userId) {
         timestamp: new Date().toLocaleString()
     };
 
-    models.push(model);
-
-    var data = JSON.stringify(models);
-    fs.writeFileSync("./model/model.json", data);
+    db.get("models").push(model);
+    db.save();
 }
 
 function uploadModelFeatures(bpmnModel, fileName, userId, metadata, report) {
-    var data = fs.readFileSync("./model/search.json", "utf8");
-    var features = JSON.parse(data);
+    const engine = new StormDB.localFileEngine("./model/search.json");
+    const db = new StormDB(engine);
+
+    var features = db.get("features").value();
 
     var featureId = features.length;
 
@@ -38,10 +40,8 @@ function uploadModelFeatures(bpmnModel, fileName, userId, metadata, report) {
         process: report.process
     };
 
-    features.push(feature);
-
-    var data = JSON.stringify(features);
-    fs.writeFileSync("./model/search.json", data);
+    db.get("features").push(feature);
+    db.save();
 }
 
 module.exports.uploadModel = uploadModel;
