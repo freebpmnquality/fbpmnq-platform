@@ -1,8 +1,10 @@
-var fs = require("fs");
+const StormDB = require("stormdb");
+
+const engine = new StormDB.localFileEngine("./user/user.json");
+const db = new StormDB(engine);
 
 function checkUser(login, password) {
-    var content = fs.readFileSync("./user/user.json", "utf8");
-    var users = JSON.parse(content);
+    var users = db.get("users").value();
     var user = null;
 
     for (var i = 0; i < users.length; i++) {
@@ -16,8 +18,7 @@ function checkUser(login, password) {
 }
 
 function verifyUser(uid) {
-    var content = fs.readFileSync("./user/user.json", "utf8");
-    var users = JSON.parse(content);
+    var users = db.get("users").value();
     var user = null;
 
     for (var i = 0; i < users.length; i++) {

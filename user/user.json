@@ -1,8 +1,10 @@
-[{
-    "login": "test",
-    "password": "test",
-    "role": "designer",
-    "uid": "05a671c66aefea124cc08b76ea6d30bb",
-    "master": "05a671c66aefea124cc08b76ea6d30bb",
-    "timestamp": "01/01/1970, 00:00:00 AM"
-}]
+{
+    "users": [{
+        "login": "test",
+        "password": "test",
+        "role": "designer",
+        "uid": "05a671c66aefea124cc08b76ea6d30bb",
+        "master": "05a671c66aefea124cc08b76ea6d30bb",
+        "timestamp": "01/01/1970, 00:00:00 AM"
+    }]
+}
