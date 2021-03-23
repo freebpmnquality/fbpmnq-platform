@@ -1,12 +1,21 @@
 var weights = {
-    "R1": 0.21,
-    "R2": 0.19,
-    "R3": 0.16,
-    "R4": 0.28,
-    "R5": 0.16
+    discrete: {
+        "R1": 0.21,
+        "R2": 0.19,
+        "R3": 0.16,
+        "R4": 0.28,
+        "R5": 0.16
+    },
+    continuous: {
+        "R1": 0.21,
+        "R2": 0.19,
+        "R3": 0.16,
+        "R4": 0.28,
+        "R5": 0.16
+    }
 };
 
-function wsmCriteria(criteria) {
+function wsmCriteria(weights, criteria) {
     var result = 0;
 
     for (const key in weights) {
@@ -16,7 +25,7 @@ function wsmCriteria(criteria) {
     return result;
 }
 
-function minCriteria(criteria) {
+function minCriteria(weights, criteria) {
     var result = [];
 
     for (const key in weights) {
@@ -27,11 +36,11 @@ function minCriteria(criteria) {
 }
 
 function assessQuality(discrete, continuous) {
-    var discreteQualityWSM = wsmCriteria(discrete);
-    var discreteQualityMIN = minCriteria(discrete);
+    var discreteQualityWSM = wsmCriteria(weights.discrete, discrete);
+    var discreteQualityMIN = minCriteria(weights.discrete, discrete);
 
-    var continuousQualityWSM = wsmCriteria(continuous);
-    var continuousQualityMIN = minCriteria(continuous);
+    var continuousQualityWSM = wsmCriteria(weights.continuous, continuous);
+    var continuousQualityMIN = minCriteria(weights.continuous, continuous);
 
     var report = {
         measures: {
