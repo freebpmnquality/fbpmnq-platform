@@ -1,9 +1,37 @@
-function assessQuality(discrete, continuous) {
-    var discreteQualityWSM = 0.21 * discrete.R1 + 0.19 * discrete.R2 + 0.16 * discrete.R3 + 0.28 * discrete.R4 + 0.16 * discrete.R5;
-    var discreteQualityMIN = Math.min(discrete.R1, discrete.R2, discrete.R3, discrete.R4, discrete.R5);
+var weights = {
+    "R1": 0.21,
+    "R2": 0.19,
+    "R3": 0.16,
+    "R4": 0.28,
+    "R5": 0.16
+};
 
-    var continuousQualityWSM = 0.21 * continuous.R1 + 0.19 * continuous.R2 + 0.16 * continuous.R3 + 0.28 * continuous.R4 + 0.16 * continuous.R5;
-    var continuousQualityMIN = Math.min(continuous.R1, continuous.R2, continuous.R3, continuous.R4, continuous.R5);
+function wsmCriteria(criteria) {
+    var result = 0;
+
+    for (const key in weights) {
+        result += weights[key] * criteria[key];
+    }
+
+    return result;
+}
+
+function minCriteria(criteria) {
+    var result = [];
+
+    for (const key in weights) {
+        result.push(criteria[key]);
+    }
+
+    return Math.min(...result);
+}
+
+function assessQuality(discrete, continuous) {
+    var discreteQualityWSM = wsmCriteria(discrete);
+    var discreteQualityMIN = minCriteria(discrete);
+
+    var continuousQualityWSM = wsmCriteria(continuous);
+    var continuousQualityMIN = minCriteria(continuous);
 
     var report = {
         measures: {
@@ -54,4 +82,5 @@ function getLinguisticQuality(quality) {
     return "Indefinable";
 }
 
+module.exports.weights = weights;
 module.exports.assessQuality = assessQuality;
