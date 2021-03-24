@@ -29,7 +29,13 @@ function minCriteria(weights, criteria) {
     var result = [];
 
     for (const key in weights) {
-        result.push(criteria[key]);
+        result.push(weights[key] * criteria[key]);
+    }
+
+    const max = Math.max(...result);
+
+    for (let i = 0; i < result.length; i++) {
+        result[i] /= max;
     }
 
     return Math.min(...result);

@@ -36,26 +36,20 @@ stream.once("open", function(fd) {
             var discrete = measurement.calculateDiscreteCriteria(measures);
             var continuous = measurement.calculateContinuousCriteria(measures);
 
-            var report = assessment.assessQuality(discrete, continuous);
-
-            // [start] Recalculate 7PMG weights using FCM
+            // [start] Recalculate 7PMG weights
             var sumDiscreteWeights = 0;
             var sumContinuousWeights = 0;
 
             const activation = function(weight, measure) {
-                const f = function(x) {
-                    return weight / Math.exp(measure);
-                };
-
-                return f(weight * measure);
+                return weight + 2 * Math.log(measure + 1);
             }
 
             for (const key in assessment.weights.discrete) {
                 const discreteWeight = assessment.weights.discrete[key];
-                const discreteMeasure = report.measures.discrete[key];
+                const discreteMeasure = discrete[key];
 
                 const continuousWeight = assessment.weights.continuous[key];
-                const continuousMeasure = report.measures.continuous[key];
+                const continuousMeasure = continuous[key];
 
                 assessment.weights.discrete[key] = activation(discreteWeight, discreteMeasure);
                 assessment.weights.continuous[key] = activation(continuousWeight, continuousMeasure);
@@ -68,7 +62,9 @@ stream.once("open", function(fd) {
                 assessment.weights.discrete[key] /= sumDiscreteWeights;
                 assessment.weights.continuous[key] /= sumContinuousWeights;
             }
-            // [/start] Recalculate 7PMG weights using FCM
+            // [/start] Recalculate 7PMG weights
+
+            var report = assessment.assessQuality(discrete, continuous);
 
             stream.write(
                 file + "," +
