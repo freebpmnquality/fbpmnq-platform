@@ -1,18 +1,17 @@
 var weights = {
-    discrete: {
-        "R1": 0.21,
-        "R2": 0.19,
-        "R3": 0.16,
-        "R4": 0.28,
-        "R5": 0.16
-    },
-    continuous: {
-        "R1": 0.21,
-        "R2": 0.19,
-        "R3": 0.16,
-        "R4": 0.28,
-        "R5": 0.16
-    }
+    "R1": 0.21,
+    "R2": 0.19,
+    "R3": 0.16,
+    "R4": 0.28,
+    "R5": 0.16
+};
+
+var rulesViolations = {
+    "R1": 0,
+    "R2": 0,
+    "R3": 0,
+    "R4": 0,
+    "R5": 0
 };
 
 function wsmCriteria(weights, criteria) {
@@ -41,12 +40,32 @@ function minCriteria(weights, criteria) {
     return Math.min(...result);
 }
 
-function assessQuality(discrete, continuous) {
-    var discreteQualityWSM = wsmCriteria(weights.discrete, discrete);
-    var discreteQualityMIN = minCriteria(weights.discrete, discrete);
+function recalculateWeights(measure) {
+    var sumWeights = 0;
 
-    var continuousQualityWSM = wsmCriteria(weights.continuous, continuous);
-    var continuousQualityMIN = minCriteria(weights.continuous, continuous);
+    const y = function(weight, violations) {
+        return weight + 2 * Math.log(violations + 1);
+    }
+
+    for (const key in weights) {
+        rulesViolations[key] += measure[key] < 1 ? 1 : 0;
+
+        weights[key] = y(weights[key], rulesViolations[key]);
+
+        sumWeights += weights[key];
+    }
+
+    for (const key in weights) {
+        weights[key] /= sumWeights;
+    }
+}
+
+function assessQuality(discrete, continuous) {
+    var discreteQualityWSM = wsmCriteria(weights, discrete);
+    var discreteQualityMIN = minCriteria(weights, discrete);
+
+    var continuousQualityWSM = wsmCriteria(weights, continuous);
+    var continuousQualityMIN = minCriteria(weights, continuous);
 
     var report = {
         measures: {
@@ -98,4 +117,5 @@ function getLinguisticQuality(quality) {
 }
 
 module.exports.weights = weights;
+module.exports.recalculateWeights = recalculateWeights;
 module.exports.assessQuality = assessQuality;
