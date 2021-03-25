@@ -44,7 +44,7 @@ function recalculateWeights(measure) {
     var sumWeights = 0;
 
     const y = function(weight, violations) {
-        return weight + 2 * Math.log(violations + 1);
+        return 0.5 * Math.pow(violations, 2) + weight;
     }
 
     for (const key in weights) {

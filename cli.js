@@ -27,7 +27,7 @@ stream.once("open", function() {
 
     var modelsCount = 0;
 
-    const reportingCondition = modelsCount => modelsCount === 1 || modelsCount % 100 === 0;
+    const reportingCondition = modelsCount => modelsCount % 500 === 0;
 
     fs.readdirSync(path).forEach(file => {
         var xmlModel = fs.readFileSync(path + file, "utf8");
